@@ -129,7 +129,10 @@ with right:
         """
     )
     st.dataframe(sample_steps, width="stretch", hide_index=True)
-    st.success(f"Result: x = {sample_solution} + {sample_modulus}k")
+    st.success(
+        f"Smallest non-negative solution: x = {sample_solution} (mod {sample_modulus})"
+    )
+    st.info(f"Result: x = {sample_solution} + {sample_modulus}k")
 
     st.markdown(
         """
