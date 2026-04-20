@@ -54,17 +54,30 @@ st.markdown(
         border-radius: 16px;
         padding: 1rem 1.1rem;
         margin-top: 1rem;
-        background: linear-gradient(135deg, rgba(214, 114, 57, 0.14), rgba(46, 114, 89, 0.10));
-        border: 1px solid rgba(214, 114, 57, 0.22);
+        background: linear-gradient(135deg, rgba(42, 127, 194, 0.16), rgba(46, 114, 89, 0.14));
+        border: 1px solid rgba(42, 127, 194, 0.22);
     }
     .result-main {
         font-size: 1.2rem;
         font-weight: 700;
         margin: 0.2rem 0;
+        color: #1f6fb2;
     }
     .result-sub {
         opacity: 0.82;
         margin: 0;
+    }
+    [data-testid="stMetric"] {
+        background: linear-gradient(135deg, rgba(42, 127, 194, 0.10), rgba(46, 114, 89, 0.10));
+        border: 1px solid rgba(42, 127, 194, 0.18);
+        border-radius: 14px;
+        padding: 0.65rem 0.8rem;
+    }
+    [data-testid="stMetricLabel"] {
+        color: #2e7259;
+    }
+    [data-testid="stMetricValue"] {
+        color: #1f6fb2;
     }
     .step-shell {
         border: 1px solid rgba(127, 127, 127, 0.22);
