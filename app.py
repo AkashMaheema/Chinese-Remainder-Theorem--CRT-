@@ -21,6 +21,11 @@ st.markdown(
     [data-testid="stHeader"] {
         background-color: transparent !important;
         z-index: 1000000 !important;
+        pointer-events: none !important;
+    }
+    
+    [data-testid="stToolbar"] {
+        pointer-events: auto !important;
     }
     
     /* Hide ONLY the deploy button, keep the 3-dot menu */
