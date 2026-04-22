@@ -51,10 +51,11 @@ st.markdown(
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        padding: 0 3rem;
+        padding: 0 6.5rem 0 3rem;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         background-color: rgba(var(--background-color), 0.8);
+        pointer-events: auto;
     }
     
     .custom-navbar a {
@@ -67,7 +68,7 @@ st.markdown(
         letter-spacing: 0.05em;
         text-transform: uppercase;
         transition: opacity 0.2s ease;
-        margin-right: 3rem; /* Make space for native 3-dot menu */
+        pointer-events: auto;
     }
     
     .custom-navbar a:hover {
@@ -178,14 +179,8 @@ st.markdown(
 )
 
 # Custom Full-Width Top Navbar (with native 3-dot menu floating on top)
-st.markdown(
-    """
-    <div class="custom-navbar">
-        <a href="https://github.com/AkashMaheema/Chinese-Remainder-Theorem--CRT-.git" target="_blank">Source Code</a>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+# Removed Source Code button
+
 
 st.markdown('<div class="header-text">Chinese Remainder Theorem.</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header-text">Explore congruences through minimalist, interactive calculations.</div>', unsafe_allow_html=True)
