@@ -11,87 +11,184 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    .stApp {
-        background:
-            radial-gradient(circle at top right, rgba(214, 114, 57, 0.12) 0%, transparent 34%),
-            radial-gradient(circle at bottom left, rgba(46, 114, 89, 0.10) 0%, transparent 28%),
-            var(--background-color);
+    /* Remove default Streamlit top padding and margins */
+    .block-container {
+        padding-top: 4rem !important;
+        padding-bottom: 2rem !important;
+    }
+    
+    /* Clean up the navbar so the 3-dot menu floats on top of our custom navbar */
+    [data-testid="stHeader"] {
+        background-color: transparent !important;
+        z-index: 1000000 !important;
+        pointer-events: none !important;
+    }
+    
+    [data-testid="stToolbar"] {
+        pointer-events: auto !important;
+    }
+    
+    /* Hide ONLY the deploy button, keep the 3-dot menu */
+    .stDeployButton, 
+    [data-testid="stDeployButton"], 
+    [data-testid="stAppDeployButton"],
+    .viewerBadge_container__1QSob,
+    .styles_viewerBadge__1yB5_,
+    .viewerBadge_link__1S137 {
+        display: none !important;
+    }
+    
+    /* Custom Full Width Navbar */
+    .custom-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60px;
+        background-color: var(--background-color);
+        border-bottom: 1px solid rgba(127, 127, 127, 0.15);
+        z-index: 999999;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 3rem;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background-color: rgba(var(--background-color), 0.8);
+    }
+    
+    .custom-navbar a {
+        text-decoration: none;
         color: var(--text-color);
-    }
-    .panel {
-        border: 1px solid rgba(127, 127, 127, 0.28);
-        border-radius: 18px;
-        padding: 1.2rem;
-        background: var(--secondary-background-color);
-        color: var(--text-color);
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.10);
-    }
-    .panel p,
-    .panel li,
-    .panel h1,
-    .panel h2,
-    .panel h3,
-    .panel h4,
-    .panel h5,
-    .panel h6 {
-        color: inherit;
-    }
-    .soft-label {
-        font-size: 0.82rem;
-        letter-spacing: 0.08em;
+        opacity: 0.6;
+        margin-left: 2.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        opacity: 0.7;
-        margin-bottom: 0.35rem;
+        transition: opacity 0.2s ease;
+        margin-right: 3rem; /* Make space for native 3-dot menu */
     }
-    .equation-row {
-        border: 1px solid rgba(127, 127, 127, 0.18);
-        border-radius: 14px;
-        padding: 0.6rem 0.8rem;
-        background: rgba(255, 255, 255, 0.03);
-        margin-bottom: 0.6rem;
+    
+    .custom-navbar a:hover {
+        opacity: 1;
     }
-    .result-card {
-        border-radius: 16px;
-        padding: 1rem 1.1rem;
-        margin-top: 1rem;
-        background: linear-gradient(135deg, rgba(42, 127, 194, 0.16), rgba(46, 114, 89, 0.14));
-        border: 1px solid rgba(42, 127, 194, 0.22);
+    
+    /* Typography and creative spacing */
+    .stApp {
+        background-color: var(--background-color);
+        color: var(--text-color);
     }
-    .result-main {
-        font-size: 1.2rem;
+    .header-text {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+    }
+    .sub-header-text {
+        font-size: 1.25rem;
+        font-weight: 300;
+        opacity: 0.6;
+        margin-bottom: 2.5rem;
+        letter-spacing: 0.02em;
+    }
+    
+    /* Editorial sections instead of boxes */
+    .editorial-section {
+        margin-bottom: 2rem;
+    }
+    .editorial-title {
+        font-size: 1rem;
         font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.5;
+        border-bottom: 1px solid rgba(127, 127, 127, 0.2);
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Equation styling (flat and blending) */
+    .equation-list {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        font-weight: 300;
         margin: 0.2rem 0;
-        color: #1f6fb2;
     }
-    .result-sub {
-        opacity: 0.82;
-        margin: 0;
+    .eq-symbol {
+        opacity: 0.4;
+        font-weight: 200;
     }
+    
+    /* Creative Result Area - Big Numbers, No Boxes */
+    .result-showcase {
+        margin-top: 3rem;
+        border-left: 4px solid var(--text-color);
+        padding-left: 2rem;
+    }
+    .result-live {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+    }
+    .result-meta {
+        font-size: 1rem;
+        font-weight: 400;
+        opacity: 0.6;
+        margin-top: 0.5rem;
+    }
+    
+    /* Custom Streamlit Metrics overrides (make them flat text instead of blocks) */
     [data-testid="stMetric"] {
-        background: linear-gradient(135deg, rgba(42, 127, 194, 0.10), rgba(46, 114, 89, 0.10));
-        border: 1px solid rgba(42, 127, 194, 0.18);
-        border-radius: 14px;
-        padding: 0.65rem 0.8rem;
+        padding: 0 !important;
+        border: none !important;
     }
     [data-testid="stMetricLabel"] {
-        color: #2e7259;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8rem;
+        opacity: 0.5;
     }
     [data-testid="stMetricValue"] {
-        color: #1f6fb2;
+        font-size: 2.2rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
     }
-    .step-shell {
-        border: 1px solid rgba(127, 127, 127, 0.22);
-        border-radius: 18px;
-        padding: 1rem 1.1rem;
-        background: rgba(255, 255, 255, 0.03);
+    
+    /* Cleaner inputs overrides */
+    [data-testid="stTextInput"] {
+        max-width: 100px;
     }
+    div[data-baseweb="input"] {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        background: transparent !important;
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-st.title("Chinese Remainder Theorem Explorer")
-st.caption("Solve systems of congruences and see how each pair is combined.")
+# Custom Full-Width Top Navbar (with native 3-dot menu floating on top)
+st.markdown(
+    """
+    <div class="custom-navbar">
+        <a href="https://github.com/AkashMaheema/Chinese-Remainder-Theorem--CRT-.git" target="_blank">Source Code</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown('<div class="header-text">Chinese Remainder Theorem.</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-header-text">Explore congruences through minimalist, interactive calculations.</div>', unsafe_allow_html=True)
 
 DEFAULT_REMAINDERS = [2, 3, 2, 1, 4, 5]
 DEFAULT_MODULI = [3, 5, 7, 4, 9, 11]
@@ -131,56 +228,53 @@ if "initialized_default_example" not in st.session_state:
 
 ensure_congruence_state(st.session_state.congruence_count)
 
-left, right = st.columns([1.25, 0.95], gap="large")
+left, center, right = st.columns([1, 1.25, 1], gap="large")
 
 with left:
-    st.markdown('<div class="panel">', unsafe_allow_html=True)
-    st.subheader("Understand the Mathematical Concept")
+    st.markdown('<div class="editorial-section">', unsafe_allow_html=True)
+    st.markdown('<div class="editorial-title">Overview</div>', unsafe_allow_html=True)
     st.markdown(
         """
-The Chinese Remainder Theorem solves equations of the form:
+        The **Chinese Remainder Theorem** solves simultaneous equations 
+        of the form `x ≡ a (mod n)`.
 
-- x ≡ a1 (mod n1)
-- x ≡ a2 (mod n2)
-- x ≡ a3 (mod n3)
-
-Key idea:
-- Combine two congruences into one equivalent congruence.
-- Repeat until only one congruence remains.
-- If a compatibility condition fails, the whole system has no solution.
-
-When two congruences are compatible, their combined modulus is the least common multiple
-of the two moduli.
+        Each step cleanly combines two compatible congruences into one. 
+        When moduli are not coprime, a compatibility condition must be met, 
+        or the whole system has no solution.
+        """
+    )
+    st.markdown(
+        """
+        *Example (Answers to 23 modulo 105):*
+        - x ≡ 2 (mod 3)
+        - x ≡ 3 (mod 5)
+        - x ≡ 2 (mod 7)
         """
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown('<div class="panel" style="margin-top: 1rem;">', unsafe_allow_html=True)
-    st.subheader("Try It")
-    st.write("Build the system inline. Every change updates the solution immediately.")
+with center:
+    st.markdown('<div class="editorial-section">', unsafe_allow_html=True)
+    st.markdown('<div class="editorial-title">Interactive Tool</div>', unsafe_allow_html=True)
 
-    count_label, minus_col, count_col, plus_col = st.columns([2.2, 0.7, 1.1, 0.7])
-    with count_label:
-        st.markdown("<div class='soft-label'>Number of congruences</div>", unsafe_allow_html=True)
-    with minus_col:
+    header_row = st.columns([2, 1, 1])
+    with header_row[0]:
+        st.markdown("<span style='opacity:0.5; font-size:0.85rem; text-transform:uppercase;'>Equations</span>", unsafe_allow_html=True)
+    with header_row[1]:
         if st.button("-", use_container_width=True, disabled=st.session_state.congruence_count <= 1):
             ensure_congruence_state(st.session_state.congruence_count - 1)
             st.rerun()
-    with count_col:
-        st.markdown(
-            f"<div style='text-align:center; padding-top:0.35rem; font-weight:600;'>{st.session_state.congruence_count}</div>",
-            unsafe_allow_html=True,
-        )
-    with plus_col:
+    with header_row[2]:
         if st.button("+", use_container_width=True, disabled=st.session_state.congruence_count >= 6):
             ensure_congruence_state(st.session_state.congruence_count + 1)
             st.rerun()
 
+    st.write("") # Spacing
+
     for index in range(st.session_state.congruence_count):
-        st.markdown("<div class='equation-row'>", unsafe_allow_html=True)
-        row = st.columns([0.9, 1.1, 0.5, 1.1, 0.2], vertical_alignment="center")
+        row = st.columns([0.4, 0.4, 0.4, 0.4, 0.3], vertical_alignment="center")
         with row[0]:
-            st.markdown("**x ≡**")
+            st.markdown("<div class='equation-list' style='justify-content:flex-end;'><span class='eq-symbol'>x ≡</span></div>", unsafe_allow_html=True)
         with row[1]:
             st.text_input(
                 f"Remainder {index + 1}",
@@ -188,7 +282,7 @@ of the two moduli.
                 label_visibility="collapsed",
             )
         with row[2]:
-            st.markdown("**(mod**")
+            st.markdown("<div class='equation-list' style='justify-content:center;'><span class='eq-symbol'>mod</span></div>", unsafe_allow_html=True)
         with row[3]:
             st.text_input(
                 f"Modulus {index + 1}",
@@ -196,8 +290,7 @@ of the two moduli.
                 label_visibility="collapsed",
             )
         with row[4]:
-            st.markdown("**)**")
-        st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("<div class='equation-list'><span class='eq-symbol'></span></div>", unsafe_allow_html=True) # empty margin match
 
     congruences: list[Congruence] = []
     solution = None
@@ -223,69 +316,44 @@ of the two moduli.
 
     if solve_error:
         st.error(solve_error)
+        st.markdown("</div>", unsafe_allow_html=True)
     else:
-        metric_left, metric_right = st.columns(2)
-        metric_left.metric("Smallest solution", f"x = {solution} (mod {modulus})")
-        metric_right.metric("General form", f"x = {solution} + {modulus}k")
+        st.markdown("</div>", unsafe_allow_html=True)
 
+with right:
+    st.markdown('<div class="editorial-section">', unsafe_allow_html=True)
+    st.markdown('<div class="editorial-title">Live Result</div>', unsafe_allow_html=True)
+    
+    if solve_error:
+        st.markdown('<span style="opacity:0.5">-</span>', unsafe_allow_html=True)
+    else:
         st.markdown(
             f"""
-            <div class="result-card">
-                <div class="soft-label">Live result</div>
-                <p class="result-main">Smallest non-negative solution: x = {solution} (mod {modulus})</p>
-                <p class="result-sub">All solutions are given by x = {solution} + {modulus}k, where k is any integer.</p>
+            <div class="result-showcase">
+                <div class="result-live">x = {solution}<br/><span style="opacity:0.4; font-size:1.5rem;">mod {modulus}</span></div>
+                <div class="result-meta">Generalized: x = {solution} + {modulus}k</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
-
     st.markdown("</div>", unsafe_allow_html=True)
 
-with right:
-    st.markdown('<div class="panel">', unsafe_allow_html=True)
-    st.subheader("Worked Example")
-    sample = [Congruence(2, 3), Congruence(3, 5), Congruence(2, 7)]
-    sample_solution, sample_modulus, sample_steps = solve_crt_with_trace(sample)
-
-    st.write("A classic CRT example that resolves to 23 modulo 105.")
-    st.markdown(
-        """
-- x ≡ 2 (mod 3)
-- x ≡ 3 (mod 5)
-- x ≡ 2 (mod 7)
-        """
-    )
-    st.markdown(
-        f"""
-        <div class="result-card">
-            <div class="soft-label">Worked answer</div>
-            <p class="result-main">x = {sample_solution} (mod {sample_modulus})</p>
-            <p class="result-sub">Equivalent integer family: x = {sample_solution} + {sample_modulus}k</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        """
-Takeaway:
-- CRT reduces many congruences to one final congruence.
-- Compatibility matters when moduli are not coprime.
-- The final answer describes all integer solutions.
-        """
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-st.markdown('<div class="panel" style="margin-top: 1rem;">', unsafe_allow_html=True)
-st.subheader("Combination Steps")
+st.markdown('<div class="editorial-section" style="margin-top: 1rem;">', unsafe_allow_html=True)
+st.markdown('<div class="editorial-title">How we got the answer</div>', unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style="font-size: 0.95rem; opacity: 0.8; margin-bottom: 1rem;">
+    The Chinese Remainder Theorem works by combining pairs of congruences one by one. Check the table below to see the math behind joining each pair of equations until reaching the final result.
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 if solve_error:
-    st.info("Enter a valid compatible system to see the full-width combination trace.")
+    st.info("Input a valid compatible system to reveal combination steps.")
 elif steps:
-    st.markdown('<div class="step-shell">', unsafe_allow_html=True)
     st.dataframe(steps, width="stretch", hide_index=True)
-    st.markdown("</div>", unsafe_allow_html=True)
 else:
-    st.info("Only one congruence was provided, so no pairwise combination was needed.")
+    st.markdown("<span style='opacity:0.5'>Only one congruence provided.</span>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
